@@ -2,18 +2,10 @@
 
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Support\Facades\Artisan;
-use Mhasnainjafri\APIToolkit\APIToolkit;
+use Mhasnainjafri\APIToolkit\API;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Database\Query\Builder as DB_Builder;
-use Illuminate\Foundation\Testing\DatabaseTransactions;
-use Mhasnainjafri\APIToolkit\QueryBuilder\QueryBuilder;
 uses(Mhasnainjafri\APIToolkit\Tests\TestCase::class);
-
-
-
-
-
 
 
 it('cached Response with QueryBuilder', function () {
@@ -28,7 +20,7 @@ it('cached Response with QueryBuilder', function () {
     Cache::shouldReceive('put')->with(Mockery::any(), Mockery::any(), Mockery::any())->andReturn(true);
 
     // Call the method under test
-    $response = APIToolkit::cachedResponse($queryBuilder);
+    $response = API::cachedResponse($queryBuilder);
 
     $responseContent = json_decode($response->getContent(), true);
 
@@ -55,7 +47,7 @@ it('cached Response with Model', function () {
     Cache::shouldReceive('put')->with(Mockery::any(), Mockery::any(), Mockery::any())->andReturn(true);
 
     // Call the method under test
-    $response = APIToolkit::cachedResponse($model);
+    $response = API::cachedResponse($model);
 
     $responseContent = json_decode($response->getContent(), true);
 
@@ -78,7 +70,7 @@ it('cached Response with DB_Builder', function () {
     Cache::shouldReceive('put')->with(Mockery::any(), Mockery::any(), Mockery::any())->andReturn(true);
 
     // Call the method under test
-    $response = APIToolkit::cachedResponse($dbBuilder);
+    $response = API::cachedResponse($dbBuilder);
 
     $responseContent = json_decode($response->getContent(), true);
 
@@ -112,7 +104,7 @@ it('cached Response with Query Builder', function () {
     Cache::shouldReceive('put')->with(Mockery::any(), Mockery::any(), Mockery::any())->andReturn(true);
 
     // Call the method under test
-    $response = APIToolkit::cachedResponse($model);
+    $response = API::cachedResponse($model);
 
     $responseContent = json_decode($response->getContent(), true);
 
@@ -136,7 +128,7 @@ it('cached Response with Builder', function () {
     Cache::shouldReceive('put')->with(Mockery::any(), Mockery::any(), Mockery::any())->andReturn(true);
 
     // Call the method under test
-    $response = APIToolkit::cachedResponse($builder);
+    $response = API::cachedResponse($builder);
 
     $responseContent = json_decode($response->getContent(), true);
 
@@ -155,7 +147,7 @@ it('success Response', function () {
     $data = ['data' => 'success data'];
 
     // Call the method under test
-    $response = APIToolkit::success($data, 'Success');
+    $response = API::success($data, 'Success');
 
     $responseContent = json_decode($response->getContent(), true);
 
@@ -167,7 +159,7 @@ it('success Response', function () {
 
 it('error Response', function () {
     // Call the method under test
-    $response = APIToolkit::error('An error occurred');
+    $response = API::error('An error occurred');
 
     $responseContent = json_decode($response->getContent(), true);
 
@@ -182,7 +174,7 @@ it('validation error Response', function () {
     $errors = ['field' => 'error message'];
 
     // Call the method under test
-    $response = APIToolkit::validationError($errors);
+    $response = API::validationError($errors);
 
     $responseContent = json_decode($response->getContent(), true);
 
@@ -194,7 +186,7 @@ it('validation error Response', function () {
 
 it('not found Response', function () {
     // Call the method under test
-    $response = APIToolkit::notFound('Resource not found');
+    $response = API::notFound('Resource not found');
 
     $responseContent = json_decode($response->getContent(), true);
 
@@ -206,7 +198,7 @@ it('not found Response', function () {
 
 it('unauthorized Response', function () {
     // Call the method under test
-    $response = APIToolkit::unauthorized('Unauthorized');
+    $response = API::unauthorized('Unauthorized');
 
     $responseContent = json_decode($response->getContent(), true);
 
@@ -219,7 +211,7 @@ it('unauthorized Response', function () {
 
 it('forbidden Response', function () {
     // Call the method under test
-    $response = APIToolkit::forbidden('Forbidden');
+    $response = API::forbidden('Forbidden');
 
     $responseContent = json_decode($response->getContent(), true);
 
@@ -234,7 +226,7 @@ it('created Response', function () {
     $data = ['data' => 'created data'];
 
     // Call the method under test
-    $response = APIToolkit::created($data, 'Resource created');
+    $response = API::created($data, 'Resource created');
 
     $responseContent = json_decode($response->getContent(), true);
 
@@ -247,7 +239,7 @@ it('created Response', function () {
 
 it('no content Response', function () {
     // Call the method under test
-    $response = APIToolkit::noContent();
+    $response = API::noContent();
 
     $responseContent = json_decode($response->getContent(), true);
 
@@ -263,7 +255,7 @@ it('paginated Response', function () {
     $paginator = new LengthAwarePaginator($items, 3, 1, 1);
 
     // Call the method under test
-    $response = APIToolkit::paginated($paginator);
+    $response = API::paginated($paginator);
 
     $responseContent = json_decode($response->getContent(), true);
 
@@ -282,7 +274,7 @@ it('custom Response', function () {
     $data = ['data' => 'custom data'];
 
     // Call the method under test
-    $response = APIToolkit::custom($data, 'Custom response');
+    $response = API::custom($data, 'Custom response');
 
     $responseContent = json_decode($response->getContent(), true);
 
@@ -298,7 +290,7 @@ it('custom Response', function () {
 //     $queryBuilder->shouldReceive('toSql')->andReturn('SELECT * FROM users');
 //     $queryBuilder->shouldReceive('getBindings')->andReturn(['value1', 'value2']);
 
-//     $key = APIToolkit::generateQueryStringKey($queryBuilder);
+//     $key = API::generateQueryStringKey($queryBuilder);
 
 //     expect($key)->toBeString();
 //     expect(strlen($key))->toBeGreaterThan(0);
@@ -310,7 +302,7 @@ it('custom Response', function () {
 //     $queryBuilder->shouldReceive('getBindings')->andReturn(['value1', 'value2']);
 
 //     $pageNumber = 1;
-//     $key = APIToolkit::generatePaginatedCacheKey($queryBuilder, $pageNumber);
+//     $key = API::generatePaginatedCacheKey($queryBuilder, $pageNumber);
 
 //     expect($key)->toBeString();
 //     expect(strlen($key))->toBeGreaterThan(0);
@@ -330,11 +322,11 @@ it('custom Response', function () {
 //         ],
 //         'status' => 200,
 //     ];
-//     mock(APIToolkit::class)
+//     mock(API::class)
 //         ->shouldReceive('formatResponse')
 //         ->andReturn(json_encode($expectedResponse));
 
-//     $response = APIToolkit::paginatedCachedResponse($queryBuilder, $pageNumber, $minutes);
+//     $response = API::paginatedCachedResponse($queryBuilder, $pageNumber, $minutes);
 
 //     expect($response)->toBeJson($expectedResponse);
 // });
@@ -353,11 +345,11 @@ it('custom Response', function () {
 //         ],
 //         'status' => 200,
 //     ];
-//     mock(APIToolkit::class)
+//     mock(API::class)
 //         ->shouldReceive('formatResponse')
 //         ->andReturn(json_encode($expectedResponse));
 
-//     $response = APIToolkit::cachedResponse($model, $uniqueKey, $minutes);
+//     $response = API::cachedResponse($model, $uniqueKey, $minutes);
 
 //     expect($response)->toBeJson($expectedResponse);
 // });

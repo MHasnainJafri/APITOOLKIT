@@ -16,6 +16,6 @@ class APIToolkitFacade extends Facade
      */
     protected static function getFacadeAccessor()
     {
-        return 'apitoolkit';
+        return 'API';
     }
 }

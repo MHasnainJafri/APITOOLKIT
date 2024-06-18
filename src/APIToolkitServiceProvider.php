@@ -55,50 +55,50 @@ class APIToolkitServiceProvider extends ServiceProvider
         $this->mergeConfigFrom(__DIR__.'/../config/config.php', 'apitoolkit');
 
         // Register the main class to use with the facade
-        $this->app->singleton('apitoolkit', function () {
-            return new APIToolkit;
+        $this->app->singleton('API', function () {
+            return new API;
         });
     }
 
     protected function registerMacro()
     {
         // Register macro for Eloquent Builder
-        EloquentBuilder::macro('cachedResponse', function ($uniqueKey = false, $minutes = 30, $statusCode = APIToolkit::SUCCESS) {
+        EloquentBuilder::macro('cachedResponse', function ($uniqueKey = false, $minutes = 30, $statusCode = API::SUCCESS) {
             /**
              * No content response.
              *
              * @var EloquentBuilder $this The current instance of EloquentBuilder.
              */
-            return APIToolkit::cachedResponse($this, $uniqueKey, $minutes, $statusCode);
+            return API::cachedResponse($this, $uniqueKey, $minutes, $statusCode);
         });
 
         // Register macro for Query Builder
-        DBBuilder::macro('cachedResponse', function ($uniqueKey = false, $minutes = 30, $statusCode = APIToolkit::SUCCESS) {
+        DBBuilder::macro('cachedResponse', function ($uniqueKey = false, $minutes = 30, $statusCode = API::SUCCESS) {
              /**
              * No content response.
              *
              * @var DBBuilder $this The current instance of EloquentBuilder.
              */
-            return APIToolkit::cachedResponse($this, $uniqueKey, $minutes, $statusCode);
+            return API::cachedResponse($this, $uniqueKey, $minutes, $statusCode);
         });
 
-        EloquentBuilder::macro('paginatedCachedResponse', function ($uniqueKey = false, $minutes = 30, $statusCode = APIToolkit::SUCCESS) {
+        EloquentBuilder::macro('paginatedCachedResponse', function ($uniqueKey = false, $minutes = 30, $statusCode = API::SUCCESS) {
             /**
              * No content response.
              *
              * @var EloquentBuilder $this The current instance of EloquentBuilder.
              */
-            return APIToolkit::paginatedCachedResponse($this, $uniqueKey, $minutes, $statusCode);
+            return API::paginatedCachedResponse($this, $uniqueKey, $minutes, $statusCode);
         });
 
         // Register macro for Query Builder
-        DBBuilder::macro('paginatedCachedResponse', function ($uniqueKey = false, $minutes = 30, $statusCode = APIToolkit::SUCCESS) {
+        DBBuilder::macro('paginatedCachedResponse', function ($uniqueKey = false, $minutes = 30, $statusCode = API::SUCCESS) {
              /**
              * No content response.
              *
              * @var DBBuilder $this The current instance of EloquentBuilder.
              */
-            return APIToolkit::paginatedCachedResponse($this, $uniqueKey, $minutes, $statusCode);
+            return API::paginatedCachedResponse($this, $uniqueKey, $minutes, $statusCode);
         });
     }
 }

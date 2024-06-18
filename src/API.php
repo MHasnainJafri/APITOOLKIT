@@ -12,7 +12,7 @@ use Illuminate\Database\Query\Builder as DB_Builder;
 use Mhasnainjafri\APIToolkit\API\APIHelper;
 use Mhasnainjafri\APIToolkit\QueryBuilder\QueryBuilder;
 
-class APIToolkit
+class API
 {  // Success Codes
     const SUCCESS = 200;
     const CREATED = 201;

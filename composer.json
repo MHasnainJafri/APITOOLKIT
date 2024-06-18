@@ -61,7 +61,7 @@
                 "Mhasnainjafri\\APIToolkit\\JsonApiPaginate\\JsonApiPaginateServiceProvider"
             ],
             "aliases": {
-                "APIToolkit": "Mhasnainjafri\\APIToolkit\\APIToolkitFacade"
+                "API": "Mhasnainjafri\\APIToolkit\\APIToolkitFacade"
             }
         }
     }
