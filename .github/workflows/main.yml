@@ -1,25 +1,27 @@
-name: Tests
+name: tests
 
-on: [push, pull_request]
+on:
+  push:
+    branches:
+      - master
+      - '*.x'
+  pull_request:
+  schedule:
+    - cron: '0 0 * * *'
+
+permissions:
+  contents: read
 
 jobs:
-  test:
-    runs-on: ${{ matrix.os }}
+  tests:
+    runs-on: ubuntu-22.04
+
     strategy:
       fail-fast: true
       matrix:
-        os: [ubuntu-latest]
-        php: [8.3, 8.2, 8.1]
-        stability: [prefer-lowest, prefer-stable]
-        include:
-          - php: 8.3
-            run_pest: true
-          - php: 8.2
-            run_pest: false
-          - php: 8.1
-            run_pest: false
+        php: [8.1, 8.2, 8.3]
 
-    name: P${{ matrix.php }} - ${{ matrix.stability }} - ${{ matrix.os }}
+    name: PHP ${{ matrix.php }}
 
     steps:
       - name: Checkout code
@@ -29,22 +31,17 @@ jobs:
         uses: shivammathur/setup-php@v2
         with:
           php-version: ${{ matrix.php }}
-          extensions: mbstring
+          extensions: dom, curl, libxml, mbstring, zip
+          ini-values: error_reporting=E_ALL
+          tools: composer:v2
           coverage: none
 
-      - name: Setup problem matchers
-        run: |
-          echo "::add-matcher::${{ runner.tool_cache }}/php.json"
-          echo "::add-matcher::${{ runner.tool_cache }}/phpunit.json"
-
       - name: Install dependencies
-        run: composer update --${{ matrix.stability }} --prefer-dist --no-interaction
+        uses: nick-fields/retry@v2
+        with:
+          timeout_minutes: 5
+          max_attempts: 5
+          command: composer update --prefer-stable --prefer-dist --no-interaction --no-progress
 
       - name: Execute tests
-        run: |
-          if [ "${{ matrix.run_pest }}" = "true" ]; then
-            ./vendor/bin/pest
-          else
-            vendor/bin/phpunit
-          fi
-        shell: bash
+        run: vendor/bin/pest
