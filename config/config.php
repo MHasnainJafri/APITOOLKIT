@@ -76,7 +76,7 @@ return [
 
 
 
-      /*
+    /*
      * The maximum number of results that will be returned
      * when using the JSON API paginator.
      */
@@ -129,4 +129,15 @@ return [
      * The name of the query parameter used for pagination
      */
     'pagination_parameter' => 'page',
+
+
+
+
+
+
+    'route' => [
+        'prefix' => 'mhasnainjafri', // Example prefix
+        // Add other route configuration options as needed
+    ],
+    'logger' => false
 ];
