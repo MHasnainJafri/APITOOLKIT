@@ -60,4 +60,14 @@ return [
      * GET /users?fields[userOwner]=id,name
      */
     'convert_relation_names_to_snake_case_plural' => true,
+
+
+
+
+
+
+
+
+
+
 ];

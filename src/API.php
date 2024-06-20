@@ -35,6 +35,8 @@ class API
 
 
     public static function paginatedCachedResponse(QueryBuilder|Model|Builder|DB_Builder $resource, int $pageNumber = 1, $minutes = 30, int $statusCode = self::SUCCESS) {
+
+        try{
         // Generate a cache key based on the query string and pagination page number
         $cacheKey = self::generatePaginatedCacheKey($resource, $pageNumber);
 
@@ -62,9 +64,14 @@ class API
             'cached_key' => $cacheKey,
             'cached_until' => $cachedUntil
         ]);
+    }catch(\Exception $e){
+        return APIHelper::formatResponse([],$e->getMessage(),$e->getCode()) ;
+    }
     }
 
     public static function cachedResponse(QueryBuilder|Model|Builder|DB_Builder $resource, String|bool $uniquekey = false, $minutes = 30, int $statusCode = self::SUCCESS) {
+
+        try{
         // If the unique key is false, generate a key based on the query string
         if ($uniquekey === false) {
             $uniquekey = self::generateQueryStringKey($resource);
@@ -87,6 +94,9 @@ class API
             'cached_key' => $uniquekey,
             'cached_until' => $cachedUntil
         ]);
+    }  catch(\Exception $e){
+        return APIHelper::formatResponse([],$e->getMessage(),$e->getCode()) ;
+    }
     }
 
     private static function generateQueryStringKey(QueryBuilder|Model|Builder|DB_Builder $resource) {
